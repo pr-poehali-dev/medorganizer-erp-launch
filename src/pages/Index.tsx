@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 
 const NAV_LINKS = [
@@ -148,6 +149,7 @@ const AUTHORS = [
 ];
 
 export default function Index() {
+  const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [activeNav, setActiveNav] = useState("home");
   const [activeCaseIdx, setActiveCaseIdx] = useState(0);
@@ -820,7 +822,7 @@ export default function Index() {
                 } else if (loginForm.login === "admin" && loginForm.password === "MedOrg2024") {
                   setShowLoginModal(false);
                   setLoginError("");
-                  window.location.href = "https://medorganizer.ru/cabinet";
+                  navigate("/dashboard");
                 } else {
                   setLoginError("Неверный логин или пароль");
                 }
