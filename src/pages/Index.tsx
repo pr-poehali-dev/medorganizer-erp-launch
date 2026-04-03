@@ -138,11 +138,25 @@ function AnimatedSection({ children, className = "" }: { children: React.ReactNo
   );
 }
 
+const AUTHORS = [
+  { name: "Дмитрий Игоревич Азаров", initials: "ДА" },
+  { name: "Алексей Евгеньевич Яблоков", initials: "АЯ" },
+  { name: "Ирина Владимировна Бажутова", initials: "ИБ" },
+  { name: "Евгений Андреевич Овчинников", initials: "ЕО" },
+  { name: "Егор Андреевич Овчинников", initials: "ЕО" },
+];
+
 export default function Index() {
   const [scrolled, setScrolled] = useState(false);
   const [activeNav, setActiveNav] = useState("home");
   const [activeCaseIdx, setActiveCaseIdx] = useState(0);
   const [mobileMenu, setMobileMenu] = useState(false);
+  const [showDemoModal, setShowDemoModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [demoForm, setDemoForm] = useState({ name: "", org: "", phone: "", email: "" });
+  const [demoSent, setDemoSent] = useState(false);
+  const [loginForm, setLoginForm] = useState({ login: "", password: "" });
+  const [loginError, setLoginError] = useState("");
 
   useEffect(() => {
     const onScroll = () => {
@@ -191,11 +205,11 @@ export default function Index() {
           </div>
 
           <button
-            className="hidden md:flex items-center gap-2 bg-[#0e7ea8] hover:bg-[#0a5e80] text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors"
-            onClick={() => scrollTo("integrations")}
+            className="hidden md:flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/25 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors"
+            onClick={() => setShowLoginModal(true)}
           >
-            <Icon name="Phone" size={16} />
-            Запросить демо
+            <Icon name="LogIn" size={16} />
+            Войти в систему
           </button>
 
           <button className="md:hidden text-white" onClick={() => setMobileMenu(!mobileMenu)}>
@@ -211,10 +225,11 @@ export default function Index() {
               </button>
             ))}
             <button
-              className="bg-[#0e7ea8] text-white px-4 py-2.5 rounded-lg text-sm font-semibold text-left"
-              onClick={() => scrollTo("integrations")}
+              className="bg-white/10 border border-white/25 text-white px-4 py-2.5 rounded-lg text-sm font-semibold text-left flex items-center gap-2"
+              onClick={() => { setShowLoginModal(true); setMobileMenu(false); }}
             >
-              Запросить демо
+              <Icon name="LogIn" size={16} />
+              Войти в систему
             </button>
           </div>
         )}
@@ -272,6 +287,21 @@ export default function Index() {
                   <Icon name="Info" size={20} />
                   О системе
                 </button>
+              </div>
+
+              {/* AUTHORS */}
+              <div className="mt-10 animate-fade-in-up opacity-0-init delay-400">
+                <div className="text-white/40 text-xs uppercase tracking-widest mb-3 font-medium">Авторы проекта</div>
+                <div className="flex flex-col gap-2">
+                  {AUTHORS.map((a, i) => (
+                    <div key={i} className="flex items-center gap-3">
+                      <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#0e7ea8] to-[#1a9e6e] flex items-center justify-center shrink-0">
+                        <span className="text-white text-[10px] font-bold">{a.initials}</span>
+                      </div>
+                      <span className="text-white/75 text-sm">{a.name}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -610,20 +640,188 @@ export default function Index() {
                   Оставьте заявку — мы проведём бесплатную демонстрацию системы и подберём оптимальную конфигурацию.
                 </p>
                 <div className="flex flex-wrap gap-4 justify-center">
-                  <button className="flex items-center gap-2 bg-white text-[#0e7ea8] font-bold px-8 py-4 rounded-xl hover:shadow-xl transition-all text-base hover:scale-105">
+                  <button
+                    className="flex items-center gap-2 bg-white text-[#0e7ea8] font-bold px-8 py-4 rounded-xl hover:shadow-xl transition-all text-base hover:scale-105"
+                    onClick={() => setShowDemoModal(true)}
+                  >
                     <Icon name="Calendar" size={20} />
                     Записаться на демо
                   </button>
-                  <button className="flex items-center gap-2 border-2 border-white/60 hover:border-white text-white font-bold px-8 py-4 rounded-xl transition-all text-base">
+                  <a
+                    href="mailto:info@medorganizer.ru?subject=Запрос%20презентации%20MedOrganizer%20Pro"
+                    className="flex items-center gap-2 border-2 border-white/60 hover:border-white text-white font-bold px-8 py-4 rounded-xl transition-all text-base"
+                  >
                     <Icon name="Download" size={20} />
                     Скачать презентацию
-                  </button>
+                  </a>
                 </div>
               </div>
             </div>
           </AnimatedSection>
         </div>
       </section>
+
+      {/* DEMO MODAL */}
+      {showDemoModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => { setShowDemoModal(false); setDemoSent(false); }} />
+          <div className="relative bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 animate-fade-in-up">
+            <button
+              className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors"
+              onClick={() => { setShowDemoModal(false); setDemoSent(false); }}
+            >
+              <Icon name="X" size={16} className="text-gray-600" />
+            </button>
+
+            {demoSent ? (
+              <div className="text-center py-6">
+                <div className="w-16 h-16 rounded-full bg-[#d8f5ec] flex items-center justify-center mx-auto mb-4">
+                  <Icon name="CheckCircle" size={32} className="text-[#1a9e6e]" />
+                </div>
+                <h3 className="font-oswald text-2xl text-gray-900 font-bold mb-2">Заявка отправлена!</h3>
+                <p className="text-gray-500 text-sm">Наш менеджер свяжется с вами в течение одного рабочего дня.</p>
+              </div>
+            ) : (
+              <>
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#0e7ea8] to-[#1a9e6e] flex items-center justify-center">
+                    <Icon name="Calendar" size={20} className="text-white" />
+                  </div>
+                  <div>
+                    <h3 className="font-oswald text-xl text-gray-900 font-bold">Записаться на демо</h3>
+                    <p className="text-gray-500 text-xs">Бесплатная демонстрация системы</p>
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1.5">Ваше имя *</label>
+                    <input
+                      type="text"
+                      placeholder="Иванова Мария Владимировна"
+                      value={demoForm.name}
+                      onChange={e => setDemoForm(f => ({ ...f, name: e.target.value }))}
+                      className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#0e7ea8]/30 focus:border-[#0e7ea8] transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1.5">Организация *</label>
+                    <input
+                      type="text"
+                      placeholder="ГБУЗ «Городская больница №1»"
+                      value={demoForm.org}
+                      onChange={e => setDemoForm(f => ({ ...f, org: e.target.value }))}
+                      className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#0e7ea8]/30 focus:border-[#0e7ea8] transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1.5">Телефон *</label>
+                    <input
+                      type="tel"
+                      placeholder="+7 (___) ___-__-__"
+                      value={demoForm.phone}
+                      onChange={e => setDemoForm(f => ({ ...f, phone: e.target.value }))}
+                      className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#0e7ea8]/30 focus:border-[#0e7ea8] transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1.5">E-mail</label>
+                    <input
+                      type="email"
+                      placeholder="ivanova@hospital.ru"
+                      value={demoForm.email}
+                      onChange={e => setDemoForm(f => ({ ...f, email: e.target.value }))}
+                      className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#0e7ea8]/30 focus:border-[#0e7ea8] transition-all"
+                    />
+                  </div>
+                </div>
+                <button
+                  className="w-full mt-6 bg-gradient-to-r from-[#0e7ea8] to-[#1a9e6e] text-white font-bold py-3.5 rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all text-base disabled:opacity-50 disabled:cursor-not-allowed"
+                  onClick={() => { if (demoForm.name && demoForm.org && demoForm.phone) setDemoSent(true); }}
+                  disabled={!demoForm.name || !demoForm.org || !demoForm.phone}
+                >
+                  Отправить заявку
+                </button>
+                <p className="text-gray-400 text-xs text-center mt-3">
+                  Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности
+                </p>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* LOGIN MODAL */}
+      {showLoginModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => { setShowLoginModal(false); setLoginError(""); }} />
+          <div className="relative bg-white rounded-3xl shadow-2xl w-full max-w-sm p-8 animate-fade-in-up">
+            <button
+              className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors"
+              onClick={() => { setShowLoginModal(false); setLoginError(""); }}
+            >
+              <Icon name="X" size={16} className="text-gray-600" />
+            </button>
+            <div className="flex justify-center mb-6">
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#0e7ea8] to-[#1a9e6e] flex items-center justify-center">
+                <Icon name="Activity" size={28} className="text-white" />
+              </div>
+            </div>
+            <h3 className="font-oswald text-2xl text-gray-900 font-bold text-center mb-1">Вход в систему</h3>
+            <p className="text-gray-500 text-sm text-center mb-6">MedOrganizer Pro</p>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Логин</label>
+                <div className="relative">
+                  <Icon name="User" size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="Введите логин"
+                    value={loginForm.login}
+                    onChange={e => { setLoginForm(f => ({ ...f, login: e.target.value })); setLoginError(""); }}
+                    className="w-full border border-gray-200 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#0e7ea8]/30 focus:border-[#0e7ea8] transition-all"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Пароль</label>
+                <div className="relative">
+                  <Icon name="Lock" size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <input
+                    type="password"
+                    placeholder="Введите пароль"
+                    value={loginForm.password}
+                    onChange={e => { setLoginForm(f => ({ ...f, password: e.target.value })); setLoginError(""); }}
+                    onKeyDown={e => { if (e.key === "Enter") setLoginError("Неверный логин или пароль"); }}
+                    className="w-full border border-gray-200 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#0e7ea8]/30 focus:border-[#0e7ea8] transition-all"
+                  />
+                </div>
+              </div>
+              {loginError && (
+                <div className="flex items-center gap-2 bg-red-50 border border-red-200 rounded-xl px-4 py-3">
+                  <Icon name="AlertCircle" size={16} className="text-red-500 shrink-0" />
+                  <span className="text-red-600 text-sm">{loginError}</span>
+                </div>
+              )}
+            </div>
+            <button
+              className="w-full mt-6 bg-gradient-to-r from-[#0e7ea8] to-[#1a9e6e] text-white font-bold py-3.5 rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all text-base disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={() => {
+                if (!loginForm.login || !loginForm.password) {
+                  setLoginError("Введите логин и пароль");
+                } else {
+                  setLoginError("Неверный логин или пароль");
+                }
+              }}
+              disabled={!loginForm.login || !loginForm.password}
+            >
+              Войти
+            </button>
+            <button className="w-full mt-3 text-[#0e7ea8] text-sm hover:underline">
+              Забыли пароль?
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* FOOTER */}
       <footer className="bg-[#0d2b3e] border-t border-white/10 py-12">
