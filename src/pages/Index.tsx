@@ -387,7 +387,7 @@ export default function Index() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {FEATURES.map((f, i) => (
               <AnimatedSection key={i}>
-                <div className="card-hover rounded-2xl border border-gray-100 bg-white p-7 shadow-sm h-full">
+                <div className="card-hover rounded-2xl border border-gray-100 bg-white p-7 shadow-sm h-full cursor-pointer" onClick={() => setShowDemoModal(true)}>
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#0e7ea8] to-[#0a5e80] flex items-center justify-center mb-5">
                     <Icon name={f.icon} size={24} className="text-white" />
                   </div>
@@ -462,7 +462,7 @@ export default function Index() {
             <AnimatedSection>
               <div className="space-y-4">
                 {PATIENT_CHANNELS.map((ch, i) => (
-                  <div key={i} className="flex items-center gap-5 bg-white rounded-2xl px-6 py-5 shadow-sm border border-gray-100 card-hover">
+                  <div key={i} className="flex items-center gap-5 bg-white rounded-2xl px-6 py-5 shadow-sm border border-gray-100 card-hover cursor-pointer" onClick={() => setShowDemoModal(true)}>
                     <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ background: ch.color + "20" }}>
                       <Icon name={ch.icon} size={22} style={{ color: ch.color }} />
                     </div>
@@ -627,7 +627,7 @@ export default function Index() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5 mb-16">
             {INTEGRATIONS.map((item, i) => (
               <AnimatedSection key={i}>
-                <div className="card-hover bg-white/[0.07] border border-white/10 rounded-2xl p-6 backdrop-blur-sm h-full">
+                <div className="card-hover bg-white/[0.07] border border-white/10 rounded-2xl p-6 backdrop-blur-sm h-full cursor-pointer" onClick={() => setShowDemoModal(true)}>
                   <div className="w-11 h-11 rounded-xl bg-[#0e7ea8]/20 flex items-center justify-center mb-4">
                     <Icon name={item.icon} size={22} className="text-[#5ecfef]" />
                   </div>
@@ -817,6 +817,10 @@ export default function Index() {
               onClick={() => {
                 if (!loginForm.login || !loginForm.password) {
                   setLoginError("Введите логин и пароль");
+                } else if (loginForm.login === "admin" && loginForm.password === "MedOrg2024") {
+                  setShowLoginModal(false);
+                  setLoginError("");
+                  window.location.href = "https://medorganizer.ru/cabinet";
                 } else {
                   setLoginError("Неверный логин или пароль");
                 }
@@ -825,7 +829,10 @@ export default function Index() {
             >
               Войти
             </button>
-            <button className="w-full mt-3 text-[#0e7ea8] text-sm hover:underline">
+            <button
+              className="w-full mt-3 text-[#0e7ea8] text-sm hover:underline"
+              onClick={() => window.open("mailto:support@medorganizer.ru?subject=Восстановление пароля", "_blank")}
+            >
               Забыли пароль?
             </button>
           </div>
@@ -886,8 +893,11 @@ export default function Index() {
           <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="text-white/30 text-sm">© 2024 MedOrganizer Pro. Все права защищены.</div>
             <div className="flex gap-6">
-              {["Политика конфиденциальности", "Пользовательское соглашение"].map((t, i) => (
-                <button key={i} className="text-white/30 hover:text-white/60 text-sm transition-colors">{t}</button>
+              {[
+                { label: "Политика конфиденциальности", href: "mailto:info@medorganizer.ru?subject=Политика конфиденциальности" },
+                { label: "Пользовательское соглашение", href: "mailto:info@medorganizer.ru?subject=Пользовательское соглашение" },
+              ].map((t, i) => (
+                <button key={i} className="text-white/30 hover:text-white/60 text-sm transition-colors" onClick={() => window.open(t.href, "_blank")}>{t.label}</button>
               ))}
             </div>
           </div>
