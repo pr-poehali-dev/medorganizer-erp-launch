@@ -139,11 +139,12 @@ function AnimatedSection({ children, className = "" }: { children: React.ReactNo
 }
 
 const AUTHORS = [
-  { name: "Дмитрий Игоревич Азаров", initials: "ДА" },
-  { name: "Алексей Евгеньевич Яблоков", initials: "АЯ" },
-  { name: "Ирина Владимировна Бажутова", initials: "ИБ" },
-  { name: "Евгений Андреевич Овчинников", initials: "ЕО" },
-  { name: "Егор Андреевич Овчинников", initials: "ЕО" },
+  { name: "Дмитрий Игоревич Азаров", initials: "ДА", photo: "https://cdn.poehali.dev/projects/50560f61-ac0b-40cb-8ed0-c908fda59e58/bucket/b3c4cf7a-2def-4a2d-9301-6b792401ef5b.JPG" },
+  { name: "Алексей Евгеньевич Яблоков", initials: "АЯ", photo: "https://cdn.poehali.dev/projects/50560f61-ac0b-40cb-8ed0-c908fda59e58/bucket/0ab517d9-69a2-412a-87f8-1ad927a5a443.JPG" },
+  { name: "Ирина Владимировна Бажутова", initials: "ИБ", photo: "https://cdn.poehali.dev/projects/50560f61-ac0b-40cb-8ed0-c908fda59e58/bucket/2e771ba7-260e-40f7-b0a1-0c4c47fa93ff.JPG" },
+  { name: "Марина Вадимовна Горбовская", initials: "МГ", photo: "https://cdn.poehali.dev/projects/50560f61-ac0b-40cb-8ed0-c908fda59e58/bucket/f898c162-bb3d-41d1-94d9-f8c68cd9dbcb.jpg" },
+  { name: "Евгений Андреевич Овчинников", initials: "ЕО", vk: "https://vk.ru/t113r" },
+  { name: "Егор Андреевич Овчинников", initials: "ЕО", vk: "https://vk.ru/idploxo" },
 ];
 
 export default function Index() {
@@ -295,9 +296,17 @@ export default function Index() {
                 <div className="flex flex-col gap-2">
                   {AUTHORS.map((a, i) => (
                     <div key={i} className="flex items-center gap-3">
-                      <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#0e7ea8] to-[#1a9e6e] flex items-center justify-center shrink-0">
-                        <span className="text-white text-[10px] font-bold">{a.initials}</span>
-                      </div>
+                      {a.photo ? (
+                        <img src={a.photo} alt={a.name} className="w-8 h-8 rounded-full object-cover shrink-0 border border-white/20" />
+                      ) : a.vk ? (
+                        <a href={a.vk} target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-[#0077FF] flex items-center justify-center shrink-0 hover:opacity-80 transition-opacity" title="ВКонтакте">
+                          <span className="text-white text-[10px] font-bold">VK</span>
+                        </a>
+                      ) : (
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#0e7ea8] to-[#1a9e6e] flex items-center justify-center shrink-0">
+                          <span className="text-white text-[10px] font-bold">{a.initials}</span>
+                        </div>
+                      )}
                       <span className="text-white/75 text-sm">{a.name}</span>
                     </div>
                   ))}
