@@ -142,6 +142,7 @@ function AnimatedSection({ children, className = "" }: { children: React.ReactNo
 const AUTHORS = [
   { name: "Дмитрий Игоревич Азаров", initials: "ДА", photo: "https://cdn.poehali.dev/projects/50560f61-ac0b-40cb-8ed0-c908fda59e58/bucket/b3c4cf7a-2def-4a2d-9301-6b792401ef5b.JPG" },
   { name: "Алексей Евгеньевич Яблоков", initials: "АЯ", photo: "https://cdn.poehali.dev/projects/50560f61-ac0b-40cb-8ed0-c908fda59e58/bucket/0ab517d9-69a2-412a-87f8-1ad927a5a443.JPG" },
+  { name: "Азиз Бахтиерович Эреджепов", initials: "АЭ", photo: "https://cdn.poehali.dev/projects/50560f61-ac0b-40cb-8ed0-c908fda59e58/bucket/c2179a5a-25ca-4b06-8f68-2c5e491a0301.jpeg" },
   { name: "Ирина Владимировна Бажутова", initials: "ИБ", photo: "https://cdn.poehali.dev/projects/50560f61-ac0b-40cb-8ed0-c908fda59e58/bucket/2e771ba7-260e-40f7-b0a1-0c4c47fa93ff.JPG" },
   { name: "Мария Семеновна Царфина", initials: "МЦ", photo: "https://cdn.poehali.dev/projects/50560f61-ac0b-40cb-8ed0-c908fda59e58/bucket/86a15033-bc41-4351-9920-31ebcbb284a3.jpeg" },
   { name: "Евгений Андреевич Овчинников", initials: "ЕО", vk: "https://vk.ru/t113r" },
