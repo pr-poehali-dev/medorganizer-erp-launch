@@ -880,7 +880,7 @@ export default function Index() {
               <div className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Контакты</div>
               <div className="space-y-3">
                 {[
-                  { icon: "Phone", text: "+7 (800) 555-35-35" },
+                  { icon: "Phone", text: "+7 (495) 777-77-77" },
                   { icon: "Mail", text: "info@medorganizer.ru" },
                   { icon: "MapPin", text: "Москва, ул. Академика Пилюгина, 14" },
                 ].map((item, i) => (
